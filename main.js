@@ -219,9 +219,7 @@ class ServiceNowAdapter extends EventEmitter {
             } else {
                return callback(null, ` GET call returned data doesn't have body.`);
             }
-
         }
-        
     });
   }
 
