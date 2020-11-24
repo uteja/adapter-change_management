@@ -194,35 +194,7 @@ class ServiceNowAdapter extends EventEmitter {
      * Note how the object was instantiated in the constructor().
      * get() takes a callback function.
      */
-      let returnData = null;
-    let returnTicketdataArray = null;
-    this.connector.get( (data, error) => {
-        if(error) {
-            log.error(`error occured for GET operation : ${error}`);
-        } else {
-            if(data != undefined && "body" in data) {
-                returnData = JSON.parse(data.body);
-                //creating array of mapped tickets
-                returnTicketdataArray = returnData.result.map( jsonKey => {
-                                return {
-                                    change_ticket_number : jsonKey.number,
-                                    active : jsonKey.active,
-                                    priority : jsonKey.priority,
-                                    description : jsonKey.description,
-                                    work_start : jsonKey.work_start,
-                                    work_end : jsonKey.work_end,
-                                    change_ticket_key : jsonKey.sys_id
-                                    };
-                                });
-                log.info(`GET call data : ${JSON.stringify(returnTicketdataArray)}`)
-                return callback(returnTicketdataArray,error);
-            } else {
-               return callback(null, ` GET call returned data doesn't have body.`);
-            }
-
-        }
-        
-    });
+       this.connector.get(callback);
   }
 
   /**
@@ -241,35 +213,7 @@ class ServiceNowAdapter extends EventEmitter {
      * Note how the object was instantiated in the constructor().
      * post() takes a callback function.
      */
-
-    let returnData = null;
-    let returnTicketdataObject = null;
-    this.connector.post( (data, error) => {
-        if(error) {
-            log.error(`error occured for GET operation : ${error}`);
-        } else {
-            if(data != undefined && "body" in data) {
-                returnData = JSON.parse(data.body).result;
-                log.info(`POST call non-genric data ${JSON.stringify(returnData)}`);
-                 //creating Object of mapped ticket
-                returnTicketdataObject =  {
-                                    change_ticket_number : returnData.number,
-                                    active : returnData.active,
-                                    priority : returnData.priority,
-                                    description : returnData.description,
-                                    work_start : returnData.work_start,
-                                    work_end : returnData.work_end,
-                                    change_ticket_key : returnData.sys_id
-                                    };
-                log.info(`POST call data : ${JSON.stringify(returnTicketdataObject)}`)
-                return callback(returnTicketdataObject,error);
-            } else {
-               return callback(null, ` POST call returned data doesn't have body.`);
-            }
-
-        }
-        
-    });
+    this.connector.post(callback);
   }
 }
 
